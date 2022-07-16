@@ -1,5 +1,8 @@
 sudo: required
 language: generic
+arch:
+ - arm64
+os: linux
 
 services:
   - docker
@@ -11,14 +14,14 @@ script:
   - docker run -e CI=true dopehead100/react-test npm test
 
 after_success:
-  - docker build -t dopehead100/multi-client ./client
-  - docker build -t dopehead100/multi-nginx ./nginx
-  - docker build -t dopehead100/multi-server ./server
-  - docker build -t dopehead100/multi-worker ./worker
+  - docker build -t dopehead100/multi-client:v2 ./client
+  - docker build -t dopehead100/multi-nginx:v2 ./nginx
+  - docker build -t dopehead100/multi-server:v2 ./server
+  - docker build -t dopehead100/multi-worker:v2 ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push dopehead100/multi-client
-  - docker push dopehead100/multi-nginx
-  - docker push dopehead100/multi-server
-  - docker push dopehead100/multi-worker
+  - docker push dopehead100/multi-client:v2
+  - docker push dopehead100/multi-nginx:v2
+  - docker push dopehead100/multi-server:v2
+  - docker push dopehead100/multi-worker:v2
